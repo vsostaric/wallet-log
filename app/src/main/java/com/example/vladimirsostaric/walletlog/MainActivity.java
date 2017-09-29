@@ -1,8 +1,11 @@
 package com.example.vladimirsostaric.walletlog;
 
+import android.icu.text.DecimalFormat;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +15,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+
+import com.example.vladimirsostaric.walletlog.fragments.AddExpenseFragment;
+import com.example.vladimirsostaric.walletlog.fragments.ViewExpensesFragment;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -80,22 +94,43 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        Fragment fragment = null;
+        String title = getString(R.string.app_name);
 
-        } else if (id == R.id.nav_slideshow) {
+        if (id == R.id.nav_add_expense) {
+            fragment = new AddExpenseFragment();
+            title = "Add Expense";
+        } else if (id == R.id.nav_view_expenses) {
+            fragment = new ViewExpensesFragment();
+            title = "View Expenses";
+        }
 
-        } else if (id == R.id.nav_manage) {
+        if(fragment != null) {
+            FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
+            tr.replace(R.id.content_frame, fragment);
+            tr.commit();
+        }
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void addExpense(View view) {
+
+        EditText amountInputView = (EditText) findViewById(R.id.amountInputField);
+        String amountInput = amountInputView.getText().toString();
+
+        if(amountInput == null || amountInput.isEmpty()) {
+            return;
+        }
+
+        BigDecimal amount = new BigDecimal(amountInputView.getText().toString()).setScale(2);
+        amountInputView.setText("");
+
     }
 }
