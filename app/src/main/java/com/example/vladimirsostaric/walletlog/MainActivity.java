@@ -1,13 +1,13 @@
 package com.example.vladimirsostaric.walletlog;
 
-import android.icu.text.DecimalFormat;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,20 +15,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
 import com.example.vladimirsostaric.walletlog.fragments.AddExpenseFragment;
 import com.example.vladimirsostaric.walletlog.fragments.ViewExpensesFragment;
+import com.example.vladimirsostaric.walletlog.model.ExpenseType;
+import com.example.vladimirsostaric.walletlog.utils.DbUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private DbUtils dbUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        dbUtils = new DbUtils(getApplicationContext());
+
     }
 
     @Override
@@ -105,18 +109,19 @@ public class MainActivity extends AppCompatActivity
             title = "View Expenses";
         }
 
-        if(fragment != null) {
+        if (fragment != null) {
             FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
             tr.replace(R.id.content_frame, fragment);
             tr.commit();
         }
 
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
@@ -125,12 +130,28 @@ public class MainActivity extends AppCompatActivity
         EditText amountInputView = (EditText) findViewById(R.id.amountInputField);
         String amountInput = amountInputView.getText().toString();
 
-        if(amountInput == null || amountInput.isEmpty()) {
+        if (amountInput == null || amountInput.isEmpty()) {
             return;
         }
-
         BigDecimal amount = new BigDecimal(amountInputView.getText().toString()).setScale(2);
+
+        Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
+        String type = spinner.getSelectedItem().toString();
+
         amountInputView.setText("");
+
+
+    }
+
+    public void addNewType(View view) {
+
+        EditText newTypeInput = (EditText) findViewById(R.id.newTypeInputField);
+        String newTypeName = newTypeInput.getText().toString();
+
+        ExpenseType newType = new ExpenseType(newTypeName);
+
+        dbUtils.insertExpenseType(newType);
+
 
     }
 }
