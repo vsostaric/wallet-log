@@ -29,7 +29,7 @@ public class AddExpenseFragment extends Fragment {
         List<String> typeChoices = dbUtils.getExpenseTypeNames();
 
         Spinner spinner = (Spinner) view.findViewById(R.id.typeSpinner);
-        ArrayAdapter<String> typeChoicesAdapter = new ArrayAdapter<String>(this.getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, typeChoices);
+        ArrayAdapter<String> typeChoicesAdapter = new ArrayAdapter<>(this.getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, typeChoices);
         typeChoicesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(typeChoicesAdapter);

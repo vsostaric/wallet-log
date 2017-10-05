@@ -21,10 +21,12 @@ import android.widget.Spinner;
 
 import com.example.vladimirsostaric.walletlog.fragments.AddExpenseFragment;
 import com.example.vladimirsostaric.walletlog.fragments.ViewExpensesFragment;
+import com.example.vladimirsostaric.walletlog.model.Expense;
 import com.example.vladimirsostaric.walletlog.model.ExpenseType;
 import com.example.vladimirsostaric.walletlog.utils.DbUtils;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -136,10 +138,14 @@ public class MainActivity extends AppCompatActivity
         BigDecimal amount = new BigDecimal(amountInputView.getText().toString()).setScale(2);
 
         Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
-        String type = spinner.getSelectedItem().toString();
+        String typeName = spinner.getSelectedItem().toString();
+
+        Expense expense = new Expense();
+        expense.setAmount(amount);
+        expense.setType(new ExpenseType(typeName));
+        dbUtils.insertExpense(expense);
 
         amountInputView.setText("");
-
 
     }
 
