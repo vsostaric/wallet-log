@@ -103,4 +103,19 @@ public class DbUtils extends SQLiteOpenHelper {
         return typeNames;
 
     }
+
+    public void resetExpenseTypes() {
+        SQLiteDatabase database = getWritableDatabase();
+        database.delete("expense_types", "", new String[] {});
+
+        ContentValues unknown = new ContentValues();
+        unknown.put("name", "unknown");
+        database.insert("expense_types", null, unknown);
+
+    }
+
+    public void resetExpenses() {
+        SQLiteDatabase database = getWritableDatabase();
+        database.delete("expenses", "", new String[] {});
+    }
 }

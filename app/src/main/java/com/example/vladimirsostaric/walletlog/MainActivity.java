@@ -178,4 +178,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void deleteAllData(View view) {
+
+        dbUtils.resetExpenses();
+        dbUtils.resetExpenseTypes();
+
+    }
 }
