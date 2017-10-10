@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ import com.example.vladimirsostaric.walletlog.model.ExpenseType;
 import com.example.vladimirsostaric.walletlog.utils.DbUtils;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -148,6 +150,8 @@ public class MainActivity extends AppCompatActivity
         expense.setType(new ExpenseType(typeName));
         dbUtils.insertExpense(expense);
 
+        Toast.makeText(getApplicationContext(), "New expense added.", Toast.LENGTH_SHORT).show();
+
         amountInputView.setText("");
 
     }
@@ -165,6 +169,8 @@ public class MainActivity extends AppCompatActivity
         ExpenseType newType = new ExpenseType(newTypeName);
 
         dbUtils.insertExpenseType(newType);
+
+        Toast.makeText(getApplicationContext(), "Expense type '" + newTypeName + "' was added.", Toast.LENGTH_SHORT).show();
 
 
     }
