@@ -10,10 +10,14 @@ import com.example.vladimirsostaric.walletlog.model.Expense;
 import com.example.vladimirsostaric.walletlog.model.ExpenseType;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DbUtils extends SQLiteOpenHelper {
+
+    public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 
     private static final String DATABASE_NAME = "WALLET_LOG_DB";
 
@@ -25,7 +29,7 @@ public class DbUtils extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
 
         database.execSQL("create table if not exists expense_types (name text primary key not null)");
-        database.execSQL("create table if not exists expenses (id int primary key, amount real not null, type_name text not null)");
+        database.execSQL("create table if not exists expenses (id int primary key, amount real not null, type_name text not null, date text not null)");
 
         ContentValues unknown = new ContentValues();
         unknown.put("name", "unknown");
@@ -44,14 +48,17 @@ public class DbUtils extends SQLiteOpenHelper {
 
         List<Expense> expenses = new ArrayList<>();
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
 
             Expense expense = new Expense();
-            BigDecimal amount = BigDecimal.valueOf(cursor.getFloat(cursor.getColumnIndex("amount")));
-            String typeName = cursor.getString(cursor.getColumnIndex("type_name"));
+            try {
+                expense.setDate(new SimpleDateFormat(DATE_FORMAT).parse(cursor.getString(cursor.getColumnIndex("date"))));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-            expense.setAmount(amount);
-            expense.setType(new ExpenseType(typeName));
+            expense.setAmount(BigDecimal.valueOf(cursor.getFloat(cursor.getColumnIndex("amount"))));
+            expense.setType(new ExpenseType(cursor.getString(cursor.getColumnIndex("type_name"))));
 
             expenses.add(expense);
         }
@@ -67,6 +74,7 @@ public class DbUtils extends SQLiteOpenHelper {
 
         values.put("type_name", expense.getType().getName());
         values.put("amount", expense.getAmount().toString());
+        values.put("date", new SimpleDateFormat(DATE_FORMAT).format(expense.getDate()));
 
         long result = database.insert("expenses", null, values);
         database.close();
@@ -106,7 +114,7 @@ public class DbUtils extends SQLiteOpenHelper {
 
     public void resetExpenseTypes() {
         SQLiteDatabase database = getWritableDatabase();
-        database.delete("expense_types", "", new String[] {});
+        database.delete("expense_types", "", new String[]{});
 
         ContentValues unknown = new ContentValues();
         unknown.put("name", "unknown");
@@ -116,6 +124,6 @@ public class DbUtils extends SQLiteOpenHelper {
 
     public void resetExpenses() {
         SQLiteDatabase database = getWritableDatabase();
-        database.delete("expenses", "", new String[] {});
+        database.delete("expenses", "", new String[]{});
     }
 }

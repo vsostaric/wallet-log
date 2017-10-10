@@ -29,6 +29,7 @@ import com.example.vladimirsostaric.walletlog.model.ExpenseType;
 import com.example.vladimirsostaric.walletlog.utils.DbUtils;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -140,14 +141,16 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), "Amount is empty!", Toast.LENGTH_SHORT).show();
             return;
         }
-        BigDecimal amount = new BigDecimal(amountInputView.getText().toString()).setScale(2, BigDecimal.ROUND_DOWN);
-
-        Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
-        String typeName = spinner.getSelectedItem().toString();
 
         Expense expense = new Expense();
-        expense.setAmount(amount);
-        expense.setType(new ExpenseType(typeName));
+
+        expense.setAmount(new BigDecimal(amountInputView.getText().toString()).setScale(2, BigDecimal.ROUND_DOWN));
+
+        Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
+        expense.setType(new ExpenseType(spinner.getSelectedItem().toString()));
+
+        expense.setDate(new Date());
+
         dbUtils.insertExpense(expense);
 
         Toast.makeText(getApplicationContext(), "New expense added.", Toast.LENGTH_SHORT).show();
