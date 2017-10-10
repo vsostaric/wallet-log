@@ -1,9 +1,7 @@
 package com.example.vladimirsostaric.walletlog;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -20,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.vladimirsostaric.walletlog.fragments.AddExpenseFragment;
 import com.example.vladimirsostaric.walletlog.fragments.SettingsFragment;
@@ -29,7 +28,6 @@ import com.example.vladimirsostaric.walletlog.model.ExpenseType;
 import com.example.vladimirsostaric.walletlog.utils.DbUtils;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -137,6 +135,7 @@ public class MainActivity extends AppCompatActivity
         String amountInput = amountInputView.getText().toString();
 
         if (amountInput == null || amountInput.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Amount is empty!", Toast.LENGTH_SHORT).show();
             return;
         }
         BigDecimal amount = new BigDecimal(amountInputView.getText().toString()).setScale(2);
@@ -157,6 +156,11 @@ public class MainActivity extends AppCompatActivity
 
         EditText newTypeInput = (EditText) findViewById(R.id.newTypeInputField);
         String newTypeName = newTypeInput.getText().toString();
+
+        if(newTypeName == null || newTypeName.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Type name is empty!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         ExpenseType newType = new ExpenseType(newTypeName);
 
