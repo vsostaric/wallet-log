@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), "Amount is empty!", Toast.LENGTH_SHORT).show();
             return;
         }
-        BigDecimal amount = new BigDecimal(amountInputView.getText().toString()).setScale(2);
+        BigDecimal amount = new BigDecimal(amountInputView.getText().toString()).setScale(2, BigDecimal.ROUND_DOWN);
 
         Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
         String typeName = spinner.getSelectedItem().toString();
