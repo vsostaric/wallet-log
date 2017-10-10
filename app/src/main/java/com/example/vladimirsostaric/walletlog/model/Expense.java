@@ -1,6 +1,9 @@
 package com.example.vladimirsostaric.walletlog.model;
 
+import com.example.vladimirsostaric.walletlog.utils.DbUtils;
+
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Expense {
@@ -33,5 +36,14 @@ public class Expense {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Expense{" +
+                amount.toString() +
+                ", " + type.getName() +
+                ", " + new SimpleDateFormat(DbUtils.DATE_FORMAT).format(date) +
+                '}';
     }
 }

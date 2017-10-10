@@ -39,18 +39,43 @@ public class ViewExpensesFragment extends Fragment {
 
         dbUtils = new DbUtils(this.getActivity().getApplicationContext());
 
-        List<Expense> expenses = dbUtils.getExpenses();
+        final List<Expense> expenses = dbUtils.getExpenses();
+        Collections.sort(expenses, new Comparator<Expense>() {
+            @Override
+            public int compare(Expense o1, Expense o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
 
-        ListView topExpensesList = (ListView) view.findViewById(R.id.top_expenses_list);
+        final String[] expensesLog = getExpensesLog(expenses);
+        final ListAdapter expenseLogAdapter = new ArrayAdapter<String>(this.getActivity().getApplicationContext(),
+                R.layout.list_black_text, R.id.list_content, expensesLog);
 
-        Map<ExpenseType, BigDecimal> averageExpensesByType = getAverageExpensesByType(expenses);
-        String[] topExpenses = getTopExpenses(averageExpensesByType);
+        final ListView expenseLogList = (ListView) view.findViewById(R.id.expensesLogList);
+        expenseLogList.setAdapter(expenseLogAdapter);
 
-        ListAdapter adapter = new ArrayAdapter<String>(this.getActivity().getApplicationContext(),
+        final Map<ExpenseType, BigDecimal> averageExpensesByType = getAverageExpensesByType(expenses);
+        final String[] topExpenses = getTopExpenses(averageExpensesByType);
+
+        final ListAdapter topExpensesAdapter = new ArrayAdapter<String>(this.getActivity().getApplicationContext(),
                 R.layout.list_black_text, R.id.list_content, topExpenses);
-        topExpensesList.setAdapter(adapter);
+
+        final ListView topExpensesList = (ListView) view.findViewById(R.id.topExpensesList);
+        topExpensesList.setAdapter(topExpensesAdapter);
 
         return view;
+    }
+
+    private String[] getExpensesLog(List<Expense> expenses) {
+
+        List<String> expensesLog = new ArrayList<>();
+
+        for(final Expense expense : expenses) {
+            expensesLog.add(expense.toString());
+        }
+
+        return expensesLog.toArray(new String[]{});
+
     }
 
     private String[] getTopExpenses(Map<ExpenseType, BigDecimal> averageExpensesByType) {
