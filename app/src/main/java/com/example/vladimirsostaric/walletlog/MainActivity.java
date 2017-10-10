@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.vladimirsostaric.walletlog.fragments.AddExpenseFragment;
+import com.example.vladimirsostaric.walletlog.fragments.SettingsFragment;
 import com.example.vladimirsostaric.walletlog.fragments.ViewExpensesFragment;
 import com.example.vladimirsostaric.walletlog.model.Expense;
 import com.example.vladimirsostaric.walletlog.model.ExpenseType;
@@ -86,10 +87,11 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
+        tr.replace(R.id.content_frame, new SettingsFragment());
+        tr.commit();
+
+        getSupportActionBar().setTitle("Settings");
 
         return super.onOptionsItemSelected(item);
     }
