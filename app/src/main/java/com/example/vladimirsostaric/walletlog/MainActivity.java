@@ -1,6 +1,8 @@
 package com.example.vladimirsostaric.walletlog;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -162,4 +164,18 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+
+    public void changeSettings(View view) {
+
+        Spinner spinner = (Spinner) findViewById(R.id.currencySpinner);
+        String currency = spinner.getSelectedItem().toString();
+
+        SharedPreferences preferences = getSharedPreferences("CURRENCY_PREF", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.putString("currency", currency);
+        editor.commit();
+
+    }
+
 }

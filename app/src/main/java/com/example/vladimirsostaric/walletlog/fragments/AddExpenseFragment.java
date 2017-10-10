@@ -1,5 +1,7 @@
 package com.example.vladimirsostaric.walletlog.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.vladimirsostaric.walletlog.R;
 import com.example.vladimirsostaric.walletlog.utils.DbUtils;
@@ -27,6 +30,12 @@ public class AddExpenseFragment extends Fragment {
         dbUtils = new DbUtils(this.getActivity().getApplicationContext());
 
         List<String> typeChoices = dbUtils.getExpenseTypeNames();
+
+        SharedPreferences preferences = this.getActivity().getSharedPreferences("CURRENCY_PREF", Context.MODE_PRIVATE);
+        String currency = preferences.getString("currency", "USD");
+
+        TextView currencyView = (TextView) view.findViewById(R.id.addExpenseCurrency);
+        currencyView.setText(currency);
 
         Spinner spinner = (Spinner) view.findViewById(R.id.typeSpinner);
         ArrayAdapter<String> typeChoicesAdapter = new ArrayAdapter<>(this.getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, typeChoices);
