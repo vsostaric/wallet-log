@@ -40,10 +40,9 @@ public class Expense {
 
     @Override
     public String toString() {
-        return "Expense{" +
-                amount.toString() +
+        return amount.toString() +
                 ", " + type.getName() +
-                ", " + new SimpleDateFormat(DbUtils.DATE_FORMAT).format(date) +
-                '}';
+                ", " + new SimpleDateFormat(DbUtils.DATE_FORMAT).format(date);
+
     }
 }

@@ -4,6 +4,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
+    <TextView
+        android:id="@+id/expensesLogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topExpensesList"
+        android:layout_marginTop="30dp"
+        android:text="Expenses log"
+        android:textAlignment="center" />
+
+    <ListView
+        android:id="@+id/expensesLogList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/expensesLogTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
+
     <TextView
         android:id="@+id/topExpensesTitle"
         android:layout_width="match_parent"
@@ -15,29 +33,7 @@
         android:id="@+id/topExpensesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
         android:layout_below="@+id/topExpensesTitle"
-        />
-
-    <TextView
-        android:id="@+id/expensesLogTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Expenses log"
-        android:textAlignment="center"
-        android:layout_below="@+id/topExpensesList"
-        />
-
-    <ListView
-        android:id="@+id/expensesLogList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/expensesLogTitle"
-        />
-
+        android:layout_marginTop="30dp" />
 </RelativeLayout>

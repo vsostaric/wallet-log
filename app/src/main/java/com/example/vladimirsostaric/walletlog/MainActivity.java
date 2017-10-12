@@ -1,6 +1,7 @@
 package com.example.vladimirsostaric.walletlog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,16 +80,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
@@ -102,99 +100,21 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        Fragment fragment = null;
-        String title = getString(R.string.app_name);
+        int id = item.getItemId();
+        Intent navigationIntent = new Intent();
 
         if (id == R.id.nav_add_expense) {
-            fragment = new AddExpenseFragment();
-            title = "Add Expense";
+            navigationIntent.setClass(this, AddExpense.class);
         } else if (id == R.id.nav_view_expenses) {
-            fragment = new ViewExpensesFragment();
-            title = "View Expenses";
+            navigationIntent.setClass(this, ViewExpenses.class);
+        } else if(id == R.id.nav_settings) {
+            navigationIntent.setClass(this, Settings.class);
         }
 
-        if (fragment != null) {
-            FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
-            tr.replace(R.id.content_frame, fragment);
-            tr.commit();
-        }
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(title);
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        startActivity(navigationIntent);
 
         return true;
     }
 
-    public void addExpense(View view) {
-
-        EditText amountInputView = (EditText) findViewById(R.id.amountInputField);
-        String amountInput = amountInputView.getText().toString();
-
-        if (amountInput == null || amountInput.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Amount is empty!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Expense expense = new Expense();
-
-        expense.setAmount(new BigDecimal(amountInputView.getText().toString()).setScale(2, BigDecimal.ROUND_DOWN));
-
-        Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
-        expense.setType(new ExpenseType(spinner.getSelectedItem().toString()));
-
-        expense.setDate(new Date());
-
-        dbUtils.insertExpense(expense);
-
-        Toast.makeText(getApplicationContext(), "New expense added.", Toast.LENGTH_SHORT).show();
-
-        amountInputView.setText("");
-
-    }
-
-    public void addNewType(View view) {
-
-        EditText newTypeInput = (EditText) findViewById(R.id.newTypeInputField);
-        String newTypeName = newTypeInput.getText().toString();
-
-        if(newTypeName == null || newTypeName.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Type name is empty!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        ExpenseType newType = new ExpenseType(newTypeName);
-
-        dbUtils.insertExpenseType(newType);
-
-        Toast.makeText(getApplicationContext(), "Expense type '" + newTypeName + "' was added.", Toast.LENGTH_SHORT).show();
-
-
-    }
-
-    public void changeSettings(View view) {
-
-        Spinner spinner = (Spinner) findViewById(R.id.currencySpinner);
-        String currency = spinner.getSelectedItem().toString();
-
-        SharedPreferences preferences = getSharedPreferences("CURRENCY_PREF", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-
-        editor.putString("currency", currency);
-        editor.commit();
-
-    }
-
-    public void deleteAllData(View view) {
-
-        dbUtils.resetExpenses();
-        dbUtils.resetExpenseTypes();
-
-    }
 }
