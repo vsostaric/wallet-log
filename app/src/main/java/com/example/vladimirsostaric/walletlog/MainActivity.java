@@ -1,38 +1,20 @@
 package com.example.vladimirsostaric.walletlog;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.example.vladimirsostaric.walletlog.fragments.AddExpenseFragment;
-import com.example.vladimirsostaric.walletlog.fragments.SettingsFragment;
-import com.example.vladimirsostaric.walletlog.fragments.ViewExpensesFragment;
-import com.example.vladimirsostaric.walletlog.model.Expense;
-import com.example.vladimirsostaric.walletlog.model.ExpenseType;
 import com.example.vladimirsostaric.walletlog.utils.DbUtils;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -86,15 +68,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
-        tr.replace(R.id.content_frame, new SettingsFragment());
-        tr.commit();
+        Intent navigationIntent = new Intent();
+        navigationIntent.setClass(this, Settings.class);
+        startActivity(navigationIntent);
 
-        getSupportActionBar().setTitle("Settings");
-
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
