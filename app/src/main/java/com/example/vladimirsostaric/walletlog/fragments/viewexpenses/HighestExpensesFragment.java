@@ -29,11 +29,6 @@ import java.util.Set;
 
 public class HighestExpensesFragment extends PlaceholderFragment {
 
-    @Override
-    protected int getLayout() {
-        return R.layout.fragment_highest_expenses;
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,6 +46,11 @@ public class HighestExpensesFragment extends PlaceholderFragment {
 
         return view;
 
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_highest_expenses;
     }
 
     private Map<ExpenseType, BigDecimal> getAverageExpensesByType(List<Expense> expenses) {
