@@ -8,8 +8,17 @@ import android.view.ViewGroup;
 
 import com.example.vladimirsostaric.walletlog.fragments.viewexpenses.ExpensesLogFragment;
 import com.example.vladimirsostaric.walletlog.fragments.viewexpenses.HighestExpensesFragment;
+import com.example.vladimirsostaric.walletlog.model.Expense;
+import com.example.vladimirsostaric.walletlog.utils.DbUtils;
 
-public abstract class PlaceholderFragment extends Fragment{
+import java.util.List;
+
+public abstract class PlaceholderFragment extends Fragment {
+
+    protected DbUtils dbUtils;
+
+    protected List<Expense> expenses;
+
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     protected abstract int getLayout();
@@ -17,11 +26,9 @@ public abstract class PlaceholderFragment extends Fragment{
     public static Fragment newInstance(int sectionNumber) {
         PlaceholderFragment fragment = null;
 
-        if(sectionNumber == 0) {
+        if (sectionNumber == 1) {
             fragment = new HighestExpensesFragment();
-        } else if(sectionNumber == 1) {
-            fragment = new HighestExpensesFragment();
-        } else if(sectionNumber == 2) {
+        } else if (sectionNumber == 2) {
             fragment = new ExpensesLogFragment();
         }
 
@@ -35,6 +42,10 @@ public abstract class PlaceholderFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(getLayout(), container, false);
+
+        dbUtils = new DbUtils(this.getActivity().getApplicationContext());
+        expenses = dbUtils.getExpenses();
+
         return rootView;
     }
 }
