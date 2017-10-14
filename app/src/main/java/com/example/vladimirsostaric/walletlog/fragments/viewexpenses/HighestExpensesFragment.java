@@ -10,7 +10,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.example.vladimirsostaric.walletlog.R;
-import com.example.vladimirsostaric.walletlog.fragments.PlaceholderFragment;
+import com.example.vladimirsostaric.walletlog.fragments.ViewExpensesFragment;
 import com.example.vladimirsostaric.walletlog.model.Expense;
 import com.example.vladimirsostaric.walletlog.model.ExpenseType;
 
@@ -27,18 +27,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class HighestExpensesFragment extends PlaceholderFragment {
+public class HighestExpensesFragment extends ViewExpensesFragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = super.onCreateView(inflater, container, savedInstanceState);
+        final View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        final Map<ExpenseType, BigDecimal> averageExpensesByType = getAverageExpensesByType(expenses);
-        final String[] topExpenses = getTopExpenses(averageExpensesByType);
+        final Map<ExpenseType, BigDecimal> expensePercentageByType = getExpensePercentageByType(expenses);
+        final String[] topExpenses = getTopExpenses(expensePercentageByType);
 
-        final ListAdapter topExpensesAdapter = new ArrayAdapter<String>(this.getActivity().getApplicationContext(),
+        final ListAdapter topExpensesAdapter = new ArrayAdapter<>(this.getActivity().getApplicationContext(),
                 R.layout.list_black_text, R.id.list_content, topExpenses);
 
         final ListView topExpensesList = (ListView) view.findViewById(R.id.topExpensesList);
@@ -48,53 +48,47 @@ public class HighestExpensesFragment extends PlaceholderFragment {
 
     }
 
+    private Map<ExpenseType, BigDecimal> getExpensePercentageByType(List<Expense> expenses) {
+
+        BigDecimal sumOfExpenses = BigDecimal.ZERO;
+
+        for (final Expense expense : expenses) {
+            sumOfExpenses = sumOfExpenses.add(expense.getAmount());
+        }
+
+        final Map<ExpenseType, BigDecimal> percentageByType = new HashMap<>();
+
+        for (final Expense expense : expenses) {
+            if (percentageByType.keySet().contains(expense.getType())) {
+                final BigDecimal amount = percentageByType.get(expense.getType()).add(expense.getAmount());
+                percentageByType.put(expense.getType(), amount);
+            } else {
+                percentageByType.put(expense.getType(), expense.getAmount());
+            }
+        }
+
+        for (final ExpenseType type : percentageByType.keySet()) {
+            final BigDecimal percentage = percentageByType.get(type).divide(sumOfExpenses, 2, RoundingMode.HALF_EVEN);
+            percentageByType.put(type, percentage);
+        }
+
+        return percentageByType;
+
+    }
+
     @Override
     protected int getLayout() {
         return R.layout.fragment_highest_expenses;
     }
 
-    private Map<ExpenseType, BigDecimal> getAverageExpensesByType(List<Expense> expenses) {
+    private String[] getTopExpenses(Map<ExpenseType, BigDecimal> expensesByType) {
 
-        Map<ExpenseType, Set<Expense>> expensesByType = new HashMap<>();
-
-        for (Expense expense : expenses) {
-            if (expensesByType.containsKey(expense.getType()) == false) {
-                Set<Expense> newExpensesSet = new HashSet<>();
-                expensesByType.put(expense.getType(), newExpensesSet);
-            }
-            expensesByType.get(expense.getType()).add(expense);
-        }
-
-        Map<ExpenseType, BigDecimal> avgExpenseByType = new HashMap<>();
-
-        for (ExpenseType type : expensesByType.keySet()) {
-
-            BigDecimal sum = BigDecimal.ZERO;
-            BigDecimal num = BigDecimal.ZERO;
-            for (Expense expense : expensesByType.get(type)) {
-
-                sum = sum.add(expense.getAmount());
-                num = num.add(BigDecimal.ONE);
-
-            }
-
-            BigDecimal avg = sum.divide(num, 2, RoundingMode.CEILING);
-            avgExpenseByType.put(type, avg);
-
-        }
-
-        return avgExpenseByType;
-
-    }
-
-    private String[] getTopExpenses(Map<ExpenseType, BigDecimal> averageExpensesByType) {
-
-        Map<ExpenseType, BigDecimal> sortedAverageExpensesByType = sortByValue(averageExpensesByType);
+        Map<ExpenseType, BigDecimal> sortedExpensesByType = sortByValue(expensesByType);
 
         List<String> topExpensesListItem = new ArrayList<>();
 
-        for (ExpenseType type : sortedAverageExpensesByType.keySet()) {
-            topExpensesListItem.add(type.getName() + " - " + sortedAverageExpensesByType.get(type).toPlainString());
+        for (ExpenseType type : sortedExpensesByType.keySet()) {
+            topExpensesListItem.add(type.getName() + " - " + sortedExpensesByType.get(type).toPlainString() + " %");
         }
 
 

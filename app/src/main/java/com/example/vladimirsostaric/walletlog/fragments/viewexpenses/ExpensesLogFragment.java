@@ -10,7 +10,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.example.vladimirsostaric.walletlog.R;
-import com.example.vladimirsostaric.walletlog.fragments.PlaceholderFragment;
+import com.example.vladimirsostaric.walletlog.fragments.ViewExpensesFragment;
 import com.example.vladimirsostaric.walletlog.model.Expense;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ExpensesLogFragment extends PlaceholderFragment {
+public class ExpensesLogFragment extends ViewExpensesFragment {
 
     @Nullable
     @Override

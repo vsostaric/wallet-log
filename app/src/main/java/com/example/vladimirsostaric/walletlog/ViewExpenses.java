@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.vladimirsostaric.walletlog.fragments.PlaceholderFragment;
+import com.example.vladimirsostaric.walletlog.fragments.ViewExpensesFragment;
 
 public class ViewExpenses extends AppCompatActivity implements BackInterface {
 
@@ -68,7 +68,7 @@ public class ViewExpenses extends AppCompatActivity implements BackInterface {
 
         @Override
         public Fragment getItem(int position) {
-            return PlaceholderFragment.newInstance(position + 1);
+            return ViewExpensesFragment.newInstance(position + 1);
         }
 
         @Override

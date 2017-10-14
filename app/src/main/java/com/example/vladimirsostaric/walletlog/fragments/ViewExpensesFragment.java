@@ -13,7 +13,7 @@ import com.example.vladimirsostaric.walletlog.utils.DbUtils;
 
 import java.util.List;
 
-public abstract class PlaceholderFragment extends Fragment {
+public abstract class ViewExpensesFragment extends Fragment {
 
     protected DbUtils dbUtils;
 
@@ -24,7 +24,7 @@ public abstract class PlaceholderFragment extends Fragment {
     protected abstract int getLayout();
 
     public static Fragment newInstance(int sectionNumber) {
-        PlaceholderFragment fragment = null;
+        ViewExpensesFragment fragment = null;
 
         if (sectionNumber == 1) {
             fragment = new HighestExpensesFragment();
@@ -41,7 +41,7 @@ public abstract class PlaceholderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(getLayout(), container, false);
+        final View rootView = inflater.inflate(getLayout(), container, false);
 
         dbUtils = new DbUtils(this.getActivity().getApplicationContext());
         expenses = dbUtils.getExpenses();
