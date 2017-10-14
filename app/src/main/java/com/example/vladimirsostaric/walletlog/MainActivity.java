@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity
             navigationIntent.setClass(this, AddExpense.class);
         } else if (id == R.id.nav_view_expenses) {
             navigationIntent.setClass(this, ViewExpenses.class);
-        } else if(id == R.id.nav_settings) {
-            navigationIntent.setClass(this, Settings.class);
         }
 
         startActivity(navigationIntent);
