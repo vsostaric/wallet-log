@@ -34,7 +34,6 @@ public class AddExpense extends AppCompatActivity implements BackInterface {
 
         dbUtils = new DbUtils(getApplicationContext());
 
-        List<String> typeChoices = dbUtils.getExpenseTypeNames();
 
         SharedPreferences preferences = getSharedPreferences("CURRENCY_PREF", Context.MODE_PRIVATE);
         String currency = preferences.getString("currency", "USD");
@@ -42,12 +41,7 @@ public class AddExpense extends AppCompatActivity implements BackInterface {
         TextView currencyView = (TextView) findViewById(R.id.addExpenseCurrency);
         currencyView.setText(currency);
 
-        Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
-        ArrayAdapter<String> typeChoicesAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, typeChoices);
-        typeChoicesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(typeChoicesAdapter);
-        spinner.setVisibility(View.VISIBLE);
+        addExpenseTypesToSpinner();
 
     }
 
@@ -115,8 +109,19 @@ public class AddExpense extends AppCompatActivity implements BackInterface {
 
         dbUtils.insertExpenseType(newType);
 
-        Toast.makeText(getApplicationContext(), "Expense type '" + newTypeName + "' was added.", Toast.LENGTH_SHORT).show();
+        addExpenseTypesToSpinner();
 
+    }
+
+    private void addExpenseTypesToSpinner() {
+
+        final List<String> typeChoices = dbUtils.getExpenseTypeNames();
+        final Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
+        final ArrayAdapter<String> typeChoicesAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, typeChoices);
+        typeChoicesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(typeChoicesAdapter);
+        spinner.setVisibility(View.VISIBLE);
 
     }
 

@@ -25,7 +25,7 @@ public class ViewExpenses extends AppCompatActivity implements BackInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_expenses);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -34,7 +34,6 @@ public class ViewExpenses extends AppCompatActivity implements BackInterface {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

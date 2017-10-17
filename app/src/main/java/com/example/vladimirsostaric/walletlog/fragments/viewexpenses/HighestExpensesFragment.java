@@ -1,5 +1,6 @@
 package com.example.vladimirsostaric.walletlog.fragments.viewexpenses;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.example.vladimirsostaric.walletlog.BackInterface;
+import com.example.vladimirsostaric.walletlog.MainActivity;
 import com.example.vladimirsostaric.walletlog.R;
 import com.example.vladimirsostaric.walletlog.fragments.ViewExpensesFragment;
 import com.example.vladimirsostaric.walletlog.model.Expense;
@@ -27,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class HighestExpensesFragment extends ViewExpensesFragment {
+public class HighestExpensesFragment extends ViewExpensesFragment implements BackInterface {
 
     @Nullable
     @Override
@@ -46,6 +49,13 @@ public class HighestExpensesFragment extends ViewExpensesFragment {
 
         return view;
 
+    }
+
+    @Override
+    public void back(View view) {
+        Intent backToMain = new Intent();
+        backToMain.setClass(this.getActivity(), MainActivity.class);
+        startActivity(backToMain);
     }
 
     private Map<ExpenseType, BigDecimal> getExpensePercentageByType(List<Expense> expenses) {
@@ -68,7 +78,7 @@ public class HighestExpensesFragment extends ViewExpensesFragment {
         }
 
         for (final ExpenseType type : percentageByType.keySet()) {
-            final BigDecimal percentage = percentageByType.get(type).divide(sumOfExpenses, 2, RoundingMode.HALF_EVEN);
+            final BigDecimal percentage = percentageByType.get(type).divide(sumOfExpenses, 4, RoundingMode.HALF_EVEN);
             percentageByType.put(type, percentage);
         }
 
