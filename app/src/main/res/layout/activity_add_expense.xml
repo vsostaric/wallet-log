@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.vladimirsostaric.walletlog.AddExpense">
 
     <Button
+        android:id="@+id/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back"
-        android:onClick="back"
         android:layout_centerHorizontal="true"
+        android:onClick="back"
         android:pointerIcon="arrow"
-        />
+        android:text="Back" />
+
+    <Spinner
+        android:id="@+id/typeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/back"
+        android:layout_marginTop="50dp"
+        android:background="@color/colorPrimary" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/amountInput"
+        android:layout_below="@+id/typeSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -36,14 +46,12 @@
                 android:id="@+id/amountInputField"
                 android:layout_width="200sp"
                 android:layout_height="match_parent"
-                android:inputType="numberDecimal"
-                />
+                android:inputType="numberDecimal" />
 
             <TextView
                 android:id="@+id/addExpenseCurrency"
                 android:layout_width="40sp"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
@@ -56,19 +64,9 @@
         android:layout_below="@+id/amountInput"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="53dp"
-        android:text="Add Expense"
         android:onClick="addExpense"
-        />
+        android:text="Add Expense" />
 
-    <Spinner
-        android:id="@+id/typeSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/addExpense"
-        android:layout_marginTop="50dp"
-        android:background="@color/colorPrimary" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/newTypeInput"
@@ -76,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/typeSpinner"
+        android:layout_below="@+id/addExpense"
         android:layout_marginTop="50dp">
 
         <TextView
@@ -88,8 +86,7 @@
             android:id="@+id/newTypeInputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            />
+            android:inputType="text" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -99,8 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/newTypeInput"
         android:layout_centerHorizontal="true"
-        android:text="Add New Type"
         android:onClick="addNewType"
-        />
+        android:text="Add New Type" />
 
 </RelativeLayout>
