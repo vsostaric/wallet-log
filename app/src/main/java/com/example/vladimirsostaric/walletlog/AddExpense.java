@@ -68,19 +68,20 @@ public class AddExpense extends AppCompatActivity implements BackInterface {
         return false;
     }
 
-    public void addExpense(View view) {
+    public void addExpense(final View view) {
 
-        EditText amountInputView = (EditText) findViewById(R.id.amountInputField);
-        String amountInput = amountInputView.getText().toString();
+        final EditText amountInputView = (EditText) findViewById(R.id.amountInputField);
+        final String amountInput = amountInputView.getText().toString();
 
         if (amountInput == null || amountInput.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Amount is empty!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Expense expense = new Expense();
+        final Expense expense = new Expense();
 
-        expense.setAmount(new BigDecimal(amountInputView.getText().toString()).setScale(2, BigDecimal.ROUND_DOWN));
+        final BigDecimal amount = new BigDecimal(amountInputView.getText().toString()).setScale(2, BigDecimal.ROUND_CEILING);
+        expense.setAmount(amount);
 
         final Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
         expense.setType(new ExpenseType(spinner.getSelectedItem().toString()));
@@ -97,15 +98,15 @@ public class AddExpense extends AppCompatActivity implements BackInterface {
 
     public void addNewType(View view) {
 
-        EditText newTypeInput = (EditText) findViewById(R.id.newTypeInputField);
-        String newTypeName = newTypeInput.getText().toString();
+        final EditText newTypeInput = (EditText) findViewById(R.id.newTypeInputField);
+        final String newTypeName = newTypeInput.getText().toString();
 
         if(newTypeName == null || newTypeName.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Type name is empty!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        ExpenseType newType = new ExpenseType(newTypeName);
+        final ExpenseType newType = new ExpenseType(newTypeName);
 
         dbUtils.insertExpenseType(newType);
         Toast.makeText(getApplicationContext(), "Type " + newTypeName + " added.", Toast.LENGTH_SHORT).show();

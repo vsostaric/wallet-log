@@ -16,6 +16,7 @@ import com.example.vladimirsostaric.walletlog.fragments.ViewExpensesFragment;
 import com.example.vladimirsostaric.walletlog.model.Expense;
 import com.example.vladimirsostaric.walletlog.utils.DbUtils;
 
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,7 +57,7 @@ public class ExpensesLogFragment extends ViewExpensesFragment {
 
     private String[] getExpensesLog(List<Expense> expenses) {
 
-        List<String> expensesLog = new ArrayList<>();
+        final List<String> expensesLog = new ArrayList<>();
 
         for (final Expense expense : expenses) {
             expensesLog.add(createLogRow(expense));
@@ -72,7 +73,7 @@ public class ExpensesLogFragment extends ViewExpensesFragment {
         final String currency = preferences.getString("currency", "USD");
 
         final StringBuilder builder = new StringBuilder();
-        builder.append(expense.getAmount());
+        builder.append(expense.getAmount().setScale(2, RoundingMode.CEILING).toString());
         builder.append(" ");
         builder.append(currency);
         builder.append(", ");
@@ -80,7 +81,7 @@ public class ExpensesLogFragment extends ViewExpensesFragment {
         builder.append(", ");
         builder.append(new SimpleDateFormat(DbUtils.DATE_FORMAT).format(expense.getDate()));
 
-        return  builder.toString();
+        return builder.toString();
 
     }
 

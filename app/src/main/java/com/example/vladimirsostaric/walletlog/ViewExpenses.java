@@ -44,7 +44,7 @@ public class ViewExpenses extends AppCompatActivity implements BackInterface {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        Intent navigationIntent = new Intent();
+        final Intent navigationIntent = new Intent();
         navigationIntent.setClass(this, Settings.class);
         startActivity(navigationIntent);
 
@@ -53,14 +53,14 @@ public class ViewExpenses extends AppCompatActivity implements BackInterface {
 
     @Override
     public void back(View view) {
-        Intent backToMain = new Intent();
+        final Intent backToMain = new Intent();
         backToMain.setClass(this, MainActivity.class);
         startActivity(backToMain);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        public SectionsPagerAdapter(final FragmentManager fm) {
             super(fm);
         }
 

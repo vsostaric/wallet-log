@@ -23,12 +23,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class HighestExpensesFragment extends ViewExpensesFragment implements BackInterface {
 
@@ -53,12 +51,12 @@ public class HighestExpensesFragment extends ViewExpensesFragment implements Bac
 
     @Override
     public void back(View view) {
-        Intent backToMain = new Intent();
+        final Intent backToMain = new Intent();
         backToMain.setClass(this.getActivity(), MainActivity.class);
         startActivity(backToMain);
     }
 
-    private Map<ExpenseType, BigDecimal> getExpensePercentageByType(List<Expense> expenses) {
+    private Map<ExpenseType, BigDecimal> getExpensePercentageByType(final List<Expense> expenses) {
 
         BigDecimal sumOfExpenses = BigDecimal.ZERO;
 
@@ -91,11 +89,11 @@ public class HighestExpensesFragment extends ViewExpensesFragment implements Bac
         return R.layout.fragment_highest_expenses;
     }
 
-    private String[] getTopExpenses(Map<ExpenseType, BigDecimal> expensesByType) {
+    private String[] getTopExpenses(final Map<ExpenseType, BigDecimal> expensesByType) {
 
-        Map<ExpenseType, BigDecimal> sortedExpensesByType = sortByValue(expensesByType);
+        final Map<ExpenseType, BigDecimal> sortedExpensesByType = sortByValue(expensesByType);
 
-        List<String> topExpensesListItem = new ArrayList<>();
+        final List<String> topExpensesListItem = new ArrayList<>();
 
         for (ExpenseType type : sortedExpensesByType.keySet()) {
             topExpensesListItem.add(type.getName() + " - " + sortedExpensesByType.get(type).toPlainString() + " %");
@@ -106,7 +104,7 @@ public class HighestExpensesFragment extends ViewExpensesFragment implements Bac
 
     }
 
-    private Map<ExpenseType, BigDecimal> sortByValue(Map<ExpenseType, BigDecimal> input) {
+    private Map<ExpenseType, BigDecimal> sortByValue(final Map<ExpenseType, BigDecimal> input) {
 
         List<Map.Entry<ExpenseType, BigDecimal>> list = new LinkedList<>(input.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<ExpenseType, BigDecimal>>() {
