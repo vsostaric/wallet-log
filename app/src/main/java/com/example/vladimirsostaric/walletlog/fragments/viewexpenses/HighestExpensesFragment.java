@@ -78,7 +78,7 @@ public class HighestExpensesFragment extends ViewExpensesFragment implements Bac
         }
 
         for (final ExpenseType type : percentageByType.keySet()) {
-            final BigDecimal percentage = percentageByType.get(type).divide(sumOfExpenses, 4, RoundingMode.HALF_EVEN);
+            final BigDecimal percentage = percentageByType.get(type).divide(sumOfExpenses, 4, RoundingMode.HALF_EVEN).multiply(BigDecimal.valueOf(100L));
             percentageByType.put(type, percentage);
         }
 

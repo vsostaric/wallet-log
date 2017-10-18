@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.vladimirsostaric.walletlog.utils.DbUtils;
+import com.example.vladimirsostaric.walletlog.utils.ExpensesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,8 @@ public class Settings extends AppCompatActivity implements BackInterface {
         spinner.setVisibility(View.VISIBLE);
 
         dbUtils = new DbUtils(getApplicationContext());
+
+        ExpensesUtils.addExpenseTypesToSpinner(this, dbUtils);
 
     }
 
@@ -64,6 +68,23 @@ public class Settings extends AppCompatActivity implements BackInterface {
         dbUtils.resetExpenses();
         dbUtils.resetExpenseTypes();
 
+        Toast.makeText(getApplicationContext(), "All data deleted!", Toast.LENGTH_SHORT).show();
+
     }
 
+    public void deleteSelectedType(View view) {
+
+        final Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
+        final String selectedType = spinner.getSelectedItem().toString();
+
+        if("unknown".equals(selectedType)) {
+            Toast.makeText(getApplicationContext(), "Can't delete unknown", Toast.LENGTH_SHORT).show();
+        } else {
+            dbUtils.removeType(selectedType);
+            ExpensesUtils.addExpenseTypesToSpinner(this, dbUtils);
+            Toast.makeText(getApplicationContext(), "Type " + selectedType + " deleted", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
 }

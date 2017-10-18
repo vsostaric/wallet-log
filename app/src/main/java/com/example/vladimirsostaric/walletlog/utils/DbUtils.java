@@ -21,6 +21,8 @@ public class DbUtils extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "WALLET_LOG_DB";
 
+    private final String EXPENSE_TYPES = "expense_types";
+
     public DbUtils(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
@@ -33,7 +35,7 @@ public class DbUtils extends SQLiteOpenHelper {
 
         ContentValues unknown = new ContentValues();
         unknown.put("name", "unknown");
-        database.insert("expense_types", null, unknown);
+        database.insert(EXPENSE_TYPES, null, unknown);
 
     }
 
@@ -88,7 +90,7 @@ public class DbUtils extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("name", type.getName());
 
-        long result = database.insert("expense_types", null, values);
+        long result = database.insert(EXPENSE_TYPES, null, values);
         database.close();
         return result > 0;
 
@@ -125,5 +127,11 @@ public class DbUtils extends SQLiteOpenHelper {
     public void resetExpenses() {
         SQLiteDatabase database = getWritableDatabase();
         database.delete("expenses", "", new String[]{});
+    }
+
+    public void removeType(String selectedType) {
+        SQLiteDatabase database = getWritableDatabase();
+        database.delete("expenses", "type_name = '" + selectedType + "'", new String[]{});
+        database.delete(EXPENSE_TYPES, "name = '" + selectedType + "'", new String[]{});
     }
 }

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.vladimirsostaric.walletlog.model.Expense;
 import com.example.vladimirsostaric.walletlog.model.ExpenseType;
 import com.example.vladimirsostaric.walletlog.utils.DbUtils;
+import com.example.vladimirsostaric.walletlog.utils.ExpensesUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -41,7 +42,7 @@ public class AddExpense extends AppCompatActivity implements BackInterface {
         TextView currencyView = (TextView) findViewById(R.id.addExpenseCurrency);
         currencyView.setText(currency);
 
-        addExpenseTypesToSpinner();
+        ExpensesUtils.addExpenseTypesToSpinner(this, dbUtils);
 
     }
 
@@ -82,7 +83,7 @@ public class AddExpense extends AppCompatActivity implements BackInterface {
 
         expense.setAmount(new BigDecimal(amountInputView.getText().toString()).setScale(2, BigDecimal.ROUND_DOWN));
 
-        Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
+        final Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
         expense.setType(new ExpenseType(spinner.getSelectedItem().toString()));
 
         expense.setDate(new Date());
@@ -108,20 +109,7 @@ public class AddExpense extends AppCompatActivity implements BackInterface {
         ExpenseType newType = new ExpenseType(newTypeName);
 
         dbUtils.insertExpenseType(newType);
-
-        addExpenseTypesToSpinner();
-
-    }
-
-    private void addExpenseTypesToSpinner() {
-
-        final List<String> typeChoices = dbUtils.getExpenseTypeNames();
-        final Spinner spinner = (Spinner) findViewById(R.id.typeSpinner);
-        final ArrayAdapter<String> typeChoicesAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, typeChoices);
-        typeChoicesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(typeChoicesAdapter);
-        spinner.setVisibility(View.VISIBLE);
+        ExpensesUtils.addExpenseTypesToSpinner(this, dbUtils);
 
     }
 
