@@ -20,6 +20,14 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="100dp"
+        android:text="@string/welcome_text"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
     <include layout="@layout/content_main" />
 
 </android.support.design.widget.CoordinatorLayout>

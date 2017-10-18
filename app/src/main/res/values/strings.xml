@@ -7,4 +7,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_view_expenses">ViewExpenses</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="welcome_text">Hi! Welcome to Wallet Log. The purpose of this app is to help you monitor your daily expenses, mostly those small leaks in your pocket which are easy to miss. Locate the navigational bar or the app settings.</string>
+    <string name="add_expense_description">Here you add your expenses. Choose an expense type, write amount and click the button. You can also add new types of expenses here. The more descriptive you are the better your log will be.</string>
 </resources>

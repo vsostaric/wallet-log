@@ -35,11 +35,10 @@ public class AddExpense extends AppCompatActivity implements BackInterface {
 
         dbUtils = new DbUtils(getApplicationContext());
 
+        final SharedPreferences preferences = getSharedPreferences("CURRENCY_PREF", Context.MODE_PRIVATE);
+        final String currency = preferences.getString("currency", "USD");
 
-        SharedPreferences preferences = getSharedPreferences("CURRENCY_PREF", Context.MODE_PRIVATE);
-        String currency = preferences.getString("currency", "USD");
-
-        TextView currencyView = (TextView) findViewById(R.id.addExpenseCurrency);
+        final TextView currencyView = (TextView) findViewById(R.id.addExpenseCurrency);
         currencyView.setText(currency);
 
         ExpensesUtils.addExpenseTypesToSpinner(this, dbUtils);
@@ -48,7 +47,7 @@ public class AddExpense extends AppCompatActivity implements BackInterface {
 
     @Override
     public void back(View view) {
-        Intent backToMain = new Intent();
+        final Intent backToMain = new Intent();
         backToMain.setClass(this, MainActivity.class);
         startActivity(backToMain);
     }
@@ -62,7 +61,7 @@ public class AddExpense extends AppCompatActivity implements BackInterface {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        Intent navigationIntent = new Intent();
+        final Intent navigationIntent = new Intent();
         navigationIntent.setClass(this, Settings.class);
         startActivity(navigationIntent);
 
@@ -109,6 +108,7 @@ public class AddExpense extends AppCompatActivity implements BackInterface {
         ExpenseType newType = new ExpenseType(newTypeName);
 
         dbUtils.insertExpenseType(newType);
+        Toast.makeText(getApplicationContext(), "Type " + newTypeName + " added.", Toast.LENGTH_SHORT).show();
         ExpensesUtils.addExpenseTypesToSpinner(this, dbUtils);
 
     }
